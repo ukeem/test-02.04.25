@@ -124,27 +124,29 @@ export const uploadCompanyImage = async (
         `${API_BASE_URL}/companies/${companyId}/image`,
         {
             method: "POST",
-            headers: { Authorization: `Bearer ${token}` },
+            headers: {
+                Authorization: `Bearer ${token}`, // Убираем Content-Type
+            },
             body: formData,
         }
     );
+
     if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
     }
+
     return response.json();
 };
 
 export const deleteCompanyImage = async (
     companyId: string,
-    imageName: string,
+    photoName: string,
     token: string
-): Promise<void> => {
-    await apiFetch<void>(
-        `/companies/${companyId}/image/${imageName}`,
-        "DELETE",
-        null,
-        token
-    );
+) => {
+    await fetch(`${API_BASE_URL}/companies/${companyId}/image/${photoName}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+    });
 };
 
 export const getContract = async (

@@ -10,6 +10,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Contacts from '../../components/widgets/Contacts';
 import { IContract } from '../../types/contract';
 import Loader from '../../components/ui/Loader';
+import Photos from '../../components/widgets/Photos';
 
 export default function CompanyPage() {
 	const { id } = useParams()
@@ -65,6 +66,7 @@ export default function CompanyPage() {
 			<HeadingItem id={id} token={token} company={company} />
 			<CompanyDetails id={id} token={token} company={company} />
 			<Contacts token={token} contract={contract} />
+			<Photos token={token} company={company} />
 		</Flex>
 	)
 }
