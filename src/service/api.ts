@@ -14,7 +14,8 @@ const API_BASE_URL = "https://test-task-api.allfuneral.com";
 const apiFetch = async <T>(
     endpoint: string,
     method: string = "GET",
-    body: unknown = null,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    body: any = null,
     token: string = ""
 ): Promise<T> => {
     const headers: HeadersInit = {
@@ -26,8 +27,7 @@ const apiFetch = async <T>(
 
     const options: RequestInit = { method, headers };
 
-    // Проверяем, что тело является объектом, перед тем как сериализовать его в JSON
-    if (body && typeof body === "object") {
+    if (body) {
         options.body = JSON.stringify(body);
     }
 
@@ -40,12 +40,8 @@ const apiFetch = async <T>(
             );
         }
 
-        // В остальных случаях парсим ответ как JSON
-        const data = await response.json();
-
-        return data;
+        return response.json();
     } catch (error) {
-        // Обработка ошибок с логированием
         console.error("Error during fetch:", error);
         throw error;
     }
