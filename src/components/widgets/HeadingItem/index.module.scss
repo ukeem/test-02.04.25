@@ -1,0 +1,30 @@
+/** @format */
+.main {
+    position: relative;
+    h1 {
+        flex-grow: 1;
+    }
+}
+
+.stroke {
+    fill: none;
+
+    path {
+        fill: none !important;
+    }
+}
+
+.btnWrap {
+    width: auto;
+}
+
+.titleConfirmDelete {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+}
+
+.back {
+    position: absolute !important;
+    left: -64px;
+}

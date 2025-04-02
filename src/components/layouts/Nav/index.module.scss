@@ -1,0 +1,12 @@
+/** @format */
+
+.main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.active {
+    button {
+        background: rgba(255, 255, 255, 0.2);
+    }
+}

@@ -1,0 +1,140 @@
+/** @format */
+.main {
+    border-radius: 8px;
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+}
+
+.select {
+    max-width: 600px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 40px;
+    background: #fff;
+    position: relative;
+    cursor: pointer;
+    transition: border 0.2s ease;
+
+    &:hover {
+        border-color: rgba(0, 0, 0, 0.5);
+    }
+
+    &.open {
+        border: 1px solid #35cdfd;
+
+        svg {
+            transform: scaleY(-1);
+        }
+    }
+
+    span {
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 171%;
+        letter-spacing: 0.02em;
+        color: rgba(0, 0, 0, 0.8);
+    }
+
+    svg {
+        position: absolute;
+        // width: 20px;
+        // height: 20px;
+        right: 12px;
+        top: 10px;
+
+        // &.open {
+        //     transform: scaleY(-1);
+        // }
+    }
+}
+
+.dropdown {
+    position: absolute;
+    overflow: hidden;
+    height: 0;
+    transition: height 0.2s ease;
+    background-color: #fff;
+    border-radius: 8px;
+    z-index: 2;
+
+    &.open {
+        width: 100%;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16),
+            0 -1px 4px 0 rgba(0, 0, 0, 0.04);
+        height: auto;
+        padding: 8px 0;
+    }
+
+    .option {
+        cursor: pointer;
+        padding: 12px 16px;
+        width: 100%;
+        height: 44px;
+        background-color: #fff;
+        font-weight: 500;
+        font-size: 13px;
+        line-height: 154%;
+        letter-spacing: 0.02em;
+        color: #3b3b3b;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        &.checkbox {
+            padding: 0 16px;
+            cursor: pointer;
+
+            input {
+                display: none;
+            }
+
+            label {
+                line-height: 44px;
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                width: 100%;
+                cursor: pointer;
+
+                span:first-child {
+                    border: 1px solid rgba(0, 0, 0, 0.3);
+                    border-radius: 4px;
+                    width: 20px;
+                    height: 20px;
+                    background: #fff;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    svg {
+                        width: 0;
+                        height: 0;
+                        overflow: hidden;
+                    }
+
+                    &.checked {
+                        svg {
+                            width: auto;
+                            height: auto;
+                        }
+                    }
+                }
+
+                span:last-child {
+                    flex-grow: 1;
+                }
+            }
+        }
+
+        &.checked {
+            background: rgba(0, 0, 0, 0.05);
+        }
+    }
+}

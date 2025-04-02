@@ -1,0 +1,183 @@
+/**
+ * eslint-disable @typescript-eslint/no-explicit-any
+ *
+ * @format
+ */
+
+/** @format */
+
+import { ICompany } from "../types/company";
+import { IContract } from "../types/contract";
+
+const API_BASE_URL = "https://test-task-api.allfuneral.com";
+
+const apiFetch = async <T>(
+    endpoint: string,
+    method: string = "GET",
+    body: unknown = null,
+    token: string = ""
+): Promise<T> => {
+    const headers: HeadersInit = {
+        "Content-Type": "application/json",
+    };
+    if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+    }
+
+    const options: RequestInit = { method, headers };
+
+    // Проверяем, что тело является объектом, перед тем как сериализовать его в JSON
+    if (body && typeof body === "object") {
+        options.body = JSON.stringify(body);
+    }
+
+    try {
+        const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
+
+        if (!response.ok) {
+            throw new Error(
+                `Error: ${response.status} - ${response.statusText}`
+            );
+        }
+
+        // В остальных случаях парсим ответ как JSON
+        const data = await response.json();
+
+        return data;
+    } catch (error) {
+        // Обработка ошибок с логированием
+        console.error("Error during fetch:", error);
+        throw error;
+    }
+};
+
+export const getAuthToken = async (username: string): Promise<string> => {
+    const response = await fetch(`${API_BASE_URL}/auth?user=${username}`, {
+        method: "GET",
+    });
+
+    if (!response.ok) {
+        throw new Error(
+            `Ошибка авторизации: ${response.status} - ${response.statusText}`
+        );
+    }
+
+    const authHeader = response.headers.get("Authorization");
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        throw new Error(
+            "Ошибка: отсутствует заголовок Authorization или он некорректен"
+        );
+    }
+
+    return authHeader.split(" ")[1];
+};
+
+export const getCompany = async (
+    companyId: string,
+    token: string
+): Promise<ICompany> => {
+    return await apiFetch<ICompany>(
+        `/companies/${companyId}`,
+        "GET",
+        null,
+        token
+    );
+};
+
+export const updateCompany = async (
+    companyId: string,
+    data: Partial<ICompany>,
+    token: string
+): Promise<ICompany> => {
+    return await apiFetch<ICompany>(
+        `/companies/${companyId}`,
+        "PATCH",
+        data,
+        token
+    );
+};
+
+export const deleteCompany = async (companyId: string, token: string) => {
+    await fetch(`${API_BASE_URL}/companies/${companyId}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    });
+};
+
+export const uploadCompanyImage = async (
+    companyId: string,
+    file: File,
+    token: string
+): Promise<{
+    name: string;
+    filepath: string;
+    thumbpath: string;
+    createdAt: string;
+}> => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await fetch(
+        `${API_BASE_URL}/companies/${companyId}/image`,
+        {
+            method: "POST",
+            headers: { Authorization: `Bearer ${token}` },
+            body: formData,
+        }
+    );
+    if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+    }
+    return response.json();
+};
+
+export const deleteCompanyImage = async (
+    companyId: string,
+    imageName: string,
+    token: string
+): Promise<void> => {
+    await apiFetch<void>(
+        `/companies/${companyId}/image/${imageName}`,
+        "DELETE",
+        null,
+        token
+    );
+};
+
+export const getContract = async (
+    contactId: string,
+    token: string
+): Promise<IContract> => {
+    return await apiFetch<IContract>(
+        `/contacts/${contactId}`,
+        "GET",
+        null,
+        token
+    );
+};
+
+export const updateContract = async (
+    contactId: string,
+    data: Partial<IContract>,
+    token: string
+): Promise<IContract> => {
+    const response = await fetch(`${API_BASE_URL}/contacts/${contactId}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data), // Сериализуем объект в строку JSON
+    });
+
+    if (!response.ok) {
+        throw new Error(`Error during update: ${response.statusText}`);
+    }
+
+    const responseData: IContract = await response.json();
+
+    return responseData;
+};

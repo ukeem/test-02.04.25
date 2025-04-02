@@ -1,0 +1,26 @@
+/** @format */
+.main {
+    width: 100%;
+}
+.stroke {
+    fill: none;
+
+    path {
+        fill: none !important;
+    }
+}
+.itemWrap {
+    height: 32px;
+}
+.itemEditWrap {
+    height: 40px;
+}
+.textTitle {
+    max-width: 160px;
+    white-space: nowrap;
+    display: block;
+    color: rgba(0, 0, 0, 0.5);
+}
+.textSecondTitle {
+    width: auto !important;
+}
