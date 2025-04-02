@@ -38,7 +38,7 @@ export default function CompanyDetails({ id, token, company }: { id: string, tok
 				issue_date,
 				no
 			},
-			// type
+			type
 		};
 		console.log(updatedData);
 
